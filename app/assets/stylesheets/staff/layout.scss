@@ -1,5 +1,5 @@
-@import 'colors';
-@import 'dimensions';
+@import "colors";
+@import "dimensions";
 
 html, body {
   margin: 0;
@@ -20,6 +20,10 @@ header {
   color: $very_light_gray;
   span.logo-mark {
     font-weight: bold;
+  }
+  a {
+    float: right;
+    color: $very_light_gray
   }
 }
 footer {

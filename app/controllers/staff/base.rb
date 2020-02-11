@@ -8,4 +8,3 @@ class Staff::Base < ApplicationController
 
   helper_method :current_staff_member
 end
-

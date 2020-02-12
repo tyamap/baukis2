@@ -11,7 +11,7 @@ class Admin::SessionsController < Admin::Base
   def create
     @form = Admin::LoginForm.new(params[:admin_login_form])
     if @form.email.present?
-      administrator = AdminMember.find_by("LOWER(email) = ?", @form.email.downcase)
+      administrator = Administrator.find_by("LOWER(email) = ?", @form.email.downcase)
     end
     if Admin::Authenticator.new(administrator).authenticate(@form.password)
       if administrator.suspended?

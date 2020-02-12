@@ -17,9 +17,9 @@ describe Staff::Authenticator do
       expect(Staff::Authenticator.new(m).authenticate(nil)).to be_falsey
     end
 
-    it "is false when account is suspended" do
+    it "is true also when account is suspended" do
       m = build(:staff_member, suspended: true)
-      expect(Staff::Authenticator.new(m).authenticate("pw")).to be_falsey
+      expect(Staff::Authenticator.new(m).authenticate("pw")).to be_truthy
     end
 
     it "is false when date is before start" do

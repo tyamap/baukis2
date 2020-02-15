@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   class Forbidden < ActionController::ActionControllerError; end
   class IpAddressRejected < ActionController::ActionControllerError; end
 
-  include ErrorHundlers
+  include ErrorHundlers if Rails.env.production?
 
   private def set_layout
     if params[:controller].match(%r{\A(staff|admin|customer)/})

@@ -9,7 +9,7 @@ class Admin::SessionsController < Admin::Base
   end
 
   def create
-    @form = Admin::LoginForm.new(params[:admin_login_form])
+    @form = Admin::LoginForm.new(login_form_paramas)
     if @form.email.present?
       administrator =
         Administrator.find_by("LOWER(email) = ?", @form.email.downcase)
@@ -29,6 +29,7 @@ class Admin::SessionsController < Admin::Base
     end
   end
 
+  # Strong Parameters フィルターを設定
   def destroy
     session.delete(:administrator_id)
     flash.notice = "ログアウトしました。"

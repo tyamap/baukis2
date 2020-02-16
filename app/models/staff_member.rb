@@ -1,5 +1,5 @@
 class StaffMember < ApplicationRecord
-  has_many :events, class_name: "StaffEvent", debendent: :destroy
+  has_many :events, class_name: "StaffEvent", dependent: :destroy
 
   # パスワードを文字列で受け取りハッシュ化する
   def password=(raw_password)
@@ -11,7 +11,7 @@ class StaffMember < ApplicationRecord
   end
 
   def active?
-    !suspended? && start_date <= Date.today &&
-    (end_date.nil? || end_date > Date.today)
+    !suspended && start_date <= Date.today &&
+      (end_date.nil? || end_date > Date.today)
   end
 end

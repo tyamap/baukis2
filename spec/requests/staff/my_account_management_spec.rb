@@ -1,6 +1,10 @@
 require "rails_helper"
 
-describe "management own account" do
+describe "staff manage own account", "before log-in" do
+  include_examples "a protected singular staff controller", "staff/accounts"
+end
+
+describe "staff manage own account" do
   before do
     post staff_session_url,
       params: {
@@ -9,6 +13,27 @@ describe "management own account" do
           password: "pw"
         }
       }
+  end
+
+  describe "show account-info" do
+    let(:staff_member) { create(:staff_member) }
+
+    it "is success" do
+      get staff_account_url
+      expect(response.status).to eq(200)
+    end
+
+    it "forcibly log-out whensuspended" do
+      staff_member.update_column(:suspended, true)
+      get staff_account_url
+      expect(response).to redirect_to(staff_root_url)
+    end
+
+    it "session time out" do
+      travel_to Staff::Base::TIMEOUT.from_now.advance(seconds: 1)
+      get staff_account_url
+      expect(response).to redirect_to(staff_login_url)
+    end
   end
 
   describe "update" do

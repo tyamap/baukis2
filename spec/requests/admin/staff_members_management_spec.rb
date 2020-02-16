@@ -1,5 +1,9 @@
 require "rails_helper"
 
+describe "admin manage members", "before log-in" do
+  include_examples "a protected admin controller", "admin/staff_members"
+end
+
 describe "admin manage members" do
   let(:administrator){create(:administrator)}
 
@@ -30,7 +34,7 @@ describe "admin manage members" do
   describe "edit" do
     let(:staff_member){create(:staff_member)}
     let(:params_hash){attributes_for(:staff_member)}
-  
+
     it "set suspended flag" do
       params_hash.merge!(suspended: true)
       patch admin_staff_member_url(staff_member),

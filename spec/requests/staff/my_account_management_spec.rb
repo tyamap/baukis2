@@ -23,7 +23,7 @@ describe "staff manage own account" do
       expect(response.status).to eq(200)
     end
 
-    it "forcibly log-out whensuspended" do
+    it "forcibly log-out when suspended" do
       staff_member.update_column(:suspended, true)
       get staff_account_url
       expect(response).to redirect_to(staff_root_url)

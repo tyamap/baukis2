@@ -1,7 +1,17 @@
 require "rails_helper"
 
-describe "members management by administrator" do
+describe "admin manage members" do
   let(:administrator){create(:administrator)}
+
+  before do
+    post admin_session_url,
+    params: {
+      admin_login_form: {
+        email: administrator.email,
+        password: "pw"
+      }
+    }
+  end
 
   describe "new registration" do
     let(:params_hash){attributes_for(:staff_member)}

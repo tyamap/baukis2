@@ -49,6 +49,16 @@ RSpec.describe StaffMember do
       expect(member).not_to be_valid
     end
 
+    it "enable name include alphabet" do
+      member = build(:staff_member, family_name: "Smith")
+      expect(member).to be_valid
+    end
+
+    it "disable name include symbol" do
+      member = build(:staff_member, family_name: "試験★")
+      expect(member).not_to be_valid
+    end
+
     it "disable name-kana include kanji" do
       member = build(:staff_member, family_name_kana: "試験")
       expect(member).not_to be_valid

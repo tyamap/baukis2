@@ -1,4 +1,6 @@
 class StaffMember < ApplicationRecord
+  has_many :events, class_name: "StaffEvent", debendent: :destroy
+
   # パスワードを文字列で受け取りハッシュ化する
   def password=(raw_password)
     if raw_password.kind_of?(String)

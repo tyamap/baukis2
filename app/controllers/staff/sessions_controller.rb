@@ -1,32 +1,27 @@
-class Staff::SessionsController < Staff::Base
-  skip_before_action :authorize
-
+class Admin::SessionsController < Admin::Base
   def new
-    if current_staff_member
-      redirect_to :staff_root
+    if current_administrator
+      redirect_to :admin_root
     else
-      @form = Staff::LoginForm.new
+      @form = Admin::LoginForm.new
       render action: "new"
     end
   end
 
   def create
-    @form = Staff::LoginForm.new(login_form_params)
+    @form = Admin::LoginForm.new(params[:admin_login_form])
     if @form.email.present?
-      staff_member =
-        StaffMember.find_by("LOWER(email) = ?", @form.email.downcase)
+      administrator =
+        Administrator.find_by("LOWER(email) = ?", @form.email.downcase)
     end
-    if Staff::Authenticator.new(staff_member).authenticate(@form.password)
-      if staff_member.suspended?
-        staff_member.events.create!(type: "rejected")
+    if Admin::Authenticator.new(administrator).authenticate(@form.password)
+      if administrator.suspended?
         flash.now.alert = "アカウントが停止されています。"
         render action: "new"
       else
-        session[:staff_member_id] = staff_member.id
-        session[:last_access_time] = Time.current
-        staff_member.events.create!(type: "logged_in")
+        session[:administrator_id] = administrator.id
         flash.notice = "ログインしました。"
-        redirect_to :staff_root
+        redirect_to :admin_root
       end
     else
       flash.now.alert = "メールアドレスまたはパスワードが正しくありません。"
@@ -34,16 +29,9 @@ class Staff::SessionsController < Staff::Base
     end
   end
 
-  private def login_form_params
-    params.require(:staff_login_form).permit(:email, :password)
-  end
-
   def destroy
-    if current_staff_member
-      current_staff_member.events.create!(type: "logged_out")
-    end
-    session.delete(:staff_member_id)
+    session.delete(:administrator_id)
     flash.notice = "ログアウトしました。"
-    redirect_to :staff_root
+    redirect_to :admin_root
   end
 end

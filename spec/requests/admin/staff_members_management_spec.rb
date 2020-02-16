@@ -17,6 +17,25 @@ describe "admin manage members" do
     }
   end
 
+  describe "show member-list" do
+    it "is success" do
+      get admin_staff_members_url
+      expect(response.status).to eq(200)
+    end
+
+    it "forcibly log-out when suspended" do
+      administrator.update_column(:suspended, true)
+      get admin_staff_members_url
+      expect(response).to redirect_to(admin_root_url)
+    end
+
+    it "session time out" do
+      travel_to Admin::Base::TIMEOUT.from_now.advance(seconds: 1)
+      get admin_staff_members_url
+      expect(response).to redirect_to(admin_login_url)
+    end
+  end
+
   describe "new registration" do
     let(:params_hash){attributes_for(:staff_member)}
 

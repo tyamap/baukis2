@@ -54,7 +54,7 @@ class FormPresenter
   def drop_down_list_block(name, label_text, choices, options = {})
     markup(:div, class: "input-block") do |m|
       m << form_builder.select(name, choices, { include_blank: true }, options)
-      m << error_message_for(name)
+      m << error_messages_for(name)
     end
   end
 

@@ -8,6 +8,6 @@ class Staff::CustomerForm
     @customer = customer
     @customer ||= Customer.new(gender: "male")
     @customer.build_home_address unless @customer.home_address
-    @customer.build_word_address unless @customer.work_address
+    @customer.build_work_address unless @customer.work_address
   end
 end
